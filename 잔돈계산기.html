@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    :root {
+      --main-color: #FF8732;
+
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: inherit;
+      font: inherit;
+    }
+
+    body {
+      background: #ffffee;
+    }
+
+    header div {
+      max-width: 350px;
+      height: 100px;
+      margin: 50px auto 0px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    header span {
+      width: 220px;
+      height: 100px;
+      line-height: 100px;
+      color: var(--main-color);
+      font-size: 36px;
+      font-weight: bold;
+
+    }
+
+    h1 {
+      width: 100px;
+      height: 100px;
+      text-indent: -9999em;
+      background-image: url('burger/burgerking-new-LOGO.png');
+      background-position: center center;
+      background-size: cover;
+    }
+
+    #wrap {
+      width: 90vw;
+      height: calc(80vh - 100px);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #wrap>div {
+      width: 48%;
+      height: 100%;
+      border-radius: 50px;
+    }
+
+    #menu {
+      background: #fffaaa;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1%;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    #menu>article {
+      width: 30%;
+      height: 30%;
+    }
+
+    #menu>article>img {
+      width: 90%;
+      transition: all 0.3s;
+    }
+
+    #menu>article>img:hover {
+      width: 100%;
+    }
+
+    #menu>article>div {
+      font-size: min(16px, 2vw);
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    /* pay */
+    #pay {
+      background: #fffaaa;
+    }
+
+    #pay h2 {
+      color: var(--main-color);
+      font-weight: bold;
+      font-size: 35px;
+      text-align: center;
+      padding: 10px 0 0;
+    }
+
+    #pay section {
+      width: 90%;
+      border-radius: 30px;
+      border: 2px solid #222;
+    }
+
+    #product {
+      margin: 10px auto 0;
+      background: #fafafa;
+      height: 50%;
+      overflow-y: auto;
+    }
+
+    #product::-webkit-scrollbar {
+      width: 0.0em;
+    }
+
+    #product .one {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0px 5px;
+      margin: 0 40px;
+      border-bottom: 3px dotted #888;
+    }
+
+    #product span {
+      width: 80px;
+    }
+
+    #product .two {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0px 5px;
+      margin: 0 40px;
+    }
+
+    #product .two img {
+      width: 20px;
+      height: 20px;
+    }
+
+    #money {
+      margin: 30px auto 0;
+      background: #fafafa;
+      height: 30%;
+      display: flex;
+      flex-flow: column;
+      justify-content: top;
+      align-items: center;
+      gap: 3%;
+    }
+
+    #money .dollors {
+      display: flex;
+      justify-content: center;
+      gap: 1%;
+    }
+
+    #money div {
+      margin: 5px 0;
+    }
+
+    #money div img {
+      width: 14%;
+    }
+
+    #money div img:hover {
+      background: #acd;
+    }
+  </style>
+  <script src="jquery/jquery-3.7.1.min.js"></script>
+  <script>
+    $(function () {
+      let 제거배열 = $('.two').find('.zero');
+      let 제거순서 = [];
+
+      let 메뉴생성 = $('#menu').find('article');
+      let No = 0;
+
+      console.log('git commit test')
+
+
+      function zero(parent) {
+        parent.remove()
+        console.log('zzz')
+      }
+      function count(count_p2, count) {
+        let before = parseInt(count_p2.text())
+        if (before == 1 && count < 0) {
+          //0, 음수방지
+        }
+        else {
+          let after = before + count
+          count_p2.text(after)
+        }
+      }
+
+
+
+      $('#product').on('click', '.two', function (e) {
+        let count_p2 = $(this).find('.count_p2')
+        let me = $(this)
+        let plus = $(this).find('.plus');
+        let minus = $(this).find('.minus');
+        let zero1 = $(this).find('.zero');
+
+        //if()실제로 클릭한 게 child영역일때만 아래를 실행
+        if ($(e.target).is(zero1)) {
+          zero(me);
+          No--
+        }
+        if ($(e.target).is(plus)) {
+          count(count_p2, 1)
+        }
+        if ($(e.target).is(minus)) {
+          count(count_p2, -1)
+        }
+
+
+      })
+
+
+
+
+
+      //생성
+      메뉴생성.click(function () {
+        주문($(this))
+
+      })
+      function 주문(e) {
+        let name = e.find('span:first').text();
+        let price = e.find('span:last').text().slice(0, -1);
+        //two를 계속 만들어 낼꺼임, two의자식 name_p들을 배열로 받아 저장하고, 그 배열중에서 name과 동일한 값이 없다면, 새로운 two를 만든다, 있다면 해당하는 배열의 순번에 count_p2의 값을 증가시킴
+        let equlname = $('.two').find('name_p').text()
+        console.log(equlname, 'da')
+        if (name == equlname) {
+          console.log('크앙')
+        }
+        else {
+          No++;
+          two생성(name, price, 1)
+        }
+      }
+      function two생성(name, price, count) {
+        let insert = `
+        <div class="two">
+          <span class="no_p"> ${No} </span>
+          <span class="name_p">${name} </span>
+          <span class="count_p1">
+            <img src="burger/plus.png" alt="" class="plus"> <span class="count_p2">${count}</span> <img src="burger/minus.png"
+              alt="" class="minus">
+          </span>
+          <span class="price_p">${price} <img src="burger/x-mark.png" alt="" class="zero"> </span>
+        </div>
+    `;
+        $('#product').append(insert); // 적절한 선택자를 넣어주세요.
+        console.log(name, price);
+      }
+
+      console.log(제거배열, '제거배열입니다')
+
+      function 제거() {
+
+      }
+
+
+    })
+
+  </script>
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>버거킹</h1>
+      <span>잔돈 계산기</span>
+    </div>
+  </header>
+  <div id="wrap">
+    <div id="menu">
+      <article class="menu0">
+        <img src="burger/00트와머팩.png" alt="트와머팩">
+        <div>
+          <span>트와머팩</span>
+          <span>18900원</span>
+        </div>
+      </article>
+      <article class="menu1">
+        <img src="burger/01BLT오믈렛킹모닝.png" alt="BLT오믈렛킹모닝">
+        <div>
+          <span>BLT오믈렛킹모닝</span>
+          <span>7500원</span>
+        </div>
+      </article>
+      <article class="menu2">
+        <img src="burger/02비프슈림프버거.png" alt="비프슈림프버거">
+        <div>
+          <span>비프슈림프버거</span>
+          <span>9000원</span>
+        </div>
+      </article>
+      <article class="menu3">
+        <img src="burger/03치킨킹BLT.png" alt="치킨킹BLT">
+        <div>
+          <span>치킨킹BLT</span>
+          <span>8800원</span>
+        </div>
+      </article>
+      <article class="menu4">
+        <img src="burger/04트리플머쉬룸와퍼.png" alt="트리플머쉬룸와퍼">
+        <div>
+          <span>트리플머쉬룸와퍼</span>
+          <span>10400원</span>
+        </div>
+      </article>
+      <article class="menu5">
+        <img src="burger/05트러플치즈프라이.png" alt="트러플치즈프라이">
+        <div>
+          <span>트러플치즈프라이</span>
+          <span>2100원</span>
+        </div>
+      </article>
+      <article class="menu6">
+        <img src="burger/06해쉬브라운.png" alt="해쉬브라운">
+        <div>
+          <span>해쉬브라운</span>
+          <span>1200원</span>
+        </div>
+      </article>
+      <article class="menu7">
+        <img src="burger/07아메리카노.png" alt="아메리카노">
+        <div>
+          <span>아메리카노</span>
+          <span>1800원</span>
+        </div>
+      </article>
+      <article class="menu8">
+        <img src="burger/08컵망고아이스크림.png" alt="컵망고아이스크림">
+        <div>
+          <span>컵망고아이스크림</span>
+          <span>2800원</span>
+        </div>
+      </article>
+    </div>
+    <div id="pay">
+      <h2>계산서</h2>
+
+      <section id="product">
+        <div class="one">
+          <span class="no_p">No</span>
+          <span class="name_p">제품</span>
+          <span class="count_p">개수</span>
+          <span class="price_p">가격</span>
+        </div>
+        <!-- <div class="two">
+          <span class="no_p">No</span>
+          <span class="name_p">제품</span>
+          <span class="count_p1">
+            <img src="burger/plus.png" alt="" class="plus"> <span class="count_p2">1</span> <img src="burger/minus.png"
+              alt="" class="minus">
+          </span>
+          <span class="price_p">가격 <img src="burger/x-mark.png" alt="" class="zero"> </span>
+        </div> -->
+
+        <!-- <div>
+          <span class="no_p">No</span>
+          <span class="name_p">제품</span>
+          <button>+</button>
+          <span class="count_p">개수</span>
+          <button>-</button>
+          <span class="price_p">가격</span>
+        </div> -->
+      </section>
+      <section id="money">
+        <div>총금액 : <span class="totalMoney"></span></div>
+        <div>보유금액 : <span class="haveMoney">12</span></div>
+
+        <div class="dollors">
+          <img src="burger/50000won.png" alt="">
+          <img src="burger/10000won.png" alt="">
+          <img src="burger/5000won.png" alt="">
+          <img src="burger/1000won.png" alt="">
+          <img src="burger/500won.png" alt="">
+          <img src="burger/100won.png" alt="">
+        </div>
+        <div>거스름돈 : <span class="result"> dsd 얼마입니다</span>
+        </div>
+
+      </section>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
